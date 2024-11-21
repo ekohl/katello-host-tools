@@ -1,9 +1,6 @@
 import os.path
 from katello.utils import ConfigParser
-from katello.constants import REPOSITORY_PATH, YUM, ZYPPER
-
-if YUM:
-    import yum
+from katello.constants import REPOSITORY_PATH, ZYPPER
 
 class EnabledReport(object):
     def __generate(self):
@@ -21,9 +18,6 @@ class EnabledReport(object):
         :param path: A .repo file path used to filter the report.
         :type path: str
         """
-        if YUM:
-            self.yb = yum.YumBase()
-            self.yb.preconf.debuglevel = 0
         self.repofile = repo_file
         self.content = self.__generate()
 
@@ -38,9 +32,7 @@ class EnabledReport(object):
         :type path: str
         """
 
-        if YUM:
-            return self._replace_vars(repo_url)
-        elif ZYPPER:
+        if ZYPPER:
             return self._cut_question_mark(repo_url)
         else:
             return repo_url;
@@ -53,15 +45,3 @@ class EnabledReport(object):
         :type path: str
         """
         return repo_url[:repo_url.find('?')]
-
-    def _replace_vars(self, repo_url):
-        """
-        returns a string with "$basearch" and "$releasever" replaced.
-
-        :param repo_url: a repo URL that you want to replace $basearch and $releasever in.
-        :type path: str
-        """
-
-        mappings = {'releasever': self.yb.conf.yumvar['releasever'], 'basearch': self.yb.conf.yumvar['basearch']}
-
-        return repo_url.replace('$releasever', mappings['releasever']).replace('$basearch', mappings['basearch'])

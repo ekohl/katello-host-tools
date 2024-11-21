@@ -26,7 +26,6 @@ if sys.version_info[0] == 2:
         modules.append('zypper_plugins.test_tracer_upload')
         modules.append('test_katello.test_tracer.test_zypper')
     else:
-        modules.append('test_yum_plugins.test_enabled_repos_upload')
         modules.append('test_katello.test_tracer.test_deb')
 
     map(__import__, modules)

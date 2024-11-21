@@ -15,9 +15,3 @@ try:
     ZYPPER = True
 except ImportError:
     ZYPPER = False
-
-try:
-    import yum
-    YUM = True
-except ImportError:
-    YUM = False

@@ -10,14 +10,7 @@ try:
     import dnf
     from katello.tracer.dnf import collect_apps
 except ImportError:
-    try:
-        import yum
-        from tracer.query import Query
-        def collect_apps():
-            query = Query()
-            return query.affected_applications().get()
-    except ImportError:
-        pass
+    pass
 
 # debian based systems
 try:

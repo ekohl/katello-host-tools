@@ -1,7 +1,7 @@
 import optparse
 
 from katello.constants import (DISABLE_ENABLE_REPOS_VAR, DISABLE_PACKAGE_PROFILE_VAR,
-        ENABLED_REPOS_PLUGIN_CONF, PACKAGE_PROFILE_PLUGIN_CONF, REPOSITORY_PATH, YUM, ZYPPER,
+        ENABLED_REPOS_PLUGIN_CONF, PACKAGE_PROFILE_PLUGIN_CONF, ZYPPER,
         ZYPPER_REPOSITORY_PATH)
 from katello.enabled_report import EnabledReport
 from katello.packages import purge_package_cache, upload_package_profile
@@ -21,12 +21,10 @@ def enabled_repos_upload():
 
     report = None
     if not combined_profiles_enabled():
-        if YUM:
-            repo_path = REPOSITORY_PATH
-        elif ZYPPER:
+        if ZYPPER:
             repo_path = ZYPPER_REPOSITORY_PATH
         else:
-            raise IOError('Neither yum nor zypper can be used')
+            raise IOError("Zypper can't be used")
         report = EnabledReport(repo_path)
 
     upload_enabled_repos_report(report, options.force)
